@@ -15,7 +15,7 @@
     </article>
         
     @empty
-        <p>No post found. Go and <a href="#">create a new one.</a></p>
+        <p>No post found. Go and <a href="{{ route('posts.create') }}">create a new one.</a></p>
     @endforelse
     
     
