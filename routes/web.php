@@ -25,4 +25,8 @@ Route::get('/', 'StaticPageController@home')->name('homepage');
 //ABOUT US
 
 Route::get('/about', 'StaticPageController@about')->name('about');
+
+//POST RESOURCES PAGES (CRUD) - GESTIONE CRUD SU PAGINE POSTS
+
+Route::resource('posts', 'PostController');
     
