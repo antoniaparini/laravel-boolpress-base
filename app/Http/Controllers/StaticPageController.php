@@ -13,4 +13,12 @@ class StaticPageController extends Controller
      public function home() {
          return view ('home');
      }
+
+    /**
+    * ABOUT METHODS
+    */
+
+    public function about() {
+        return view ('about');
+    }
 }
