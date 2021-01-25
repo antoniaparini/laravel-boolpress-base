@@ -14,6 +14,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('about') }}">About</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('posts.index') }}">Blog</a>
+              </li>
           </ul>
         </div>
       </nav>
