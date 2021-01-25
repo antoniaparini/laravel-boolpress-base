@@ -21,4 +21,8 @@ use Illuminate\Support\Facades\Route;
 //HOMEPAGE
 
 Route::get('/', 'StaticPageController@home')->name('homepage');
+
+//ABOUT US
+
+Route::get('/about', 'StaticPageController@about')->name('about');
     
