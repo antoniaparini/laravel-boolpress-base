@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\StaticPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,18 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 /**
- * STATIC PAGES CONTROLLERS
+ * 
+ * STATIC PAGES
+ * 
  */
 
-//HOMEPAGE
+Route::get('/', 'StaticController@home')->name('homepage');
+Route::get('/about', 'StaticController@about')->name('about');
 
-Route::get('/', 'StaticPageController@home')->name('homepage');
-
-//ABOUT US
-
-Route::get('/about', 'StaticPageController@about')->name('about');
-
-//POST RESOURCES PAGES (CRUD) - GESTIONE CRUD SU PAGINE POSTS
-
+/**
+ * POST RESOURCE PAGES (CRUD)
+ */
 Route::resource('posts', 'PostController');
-    
