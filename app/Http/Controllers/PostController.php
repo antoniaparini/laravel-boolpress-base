@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Post;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Post;
+use App\InfoPost;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -28,7 +30,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        //get all TAGS!
+        $tags = Tag::all();
+        return view('posts.create', compact('tags'));
     }
 
     /**
@@ -56,10 +60,21 @@ class PostController extends Controller
         //SAVE TO DB
         $newPost = new Post();
         $newPost->fill($data); //fillable nel Model
-
         $saved = $newPost->save();
 
-        if($saved) {
+
+        //<------------- Info Post Record della Tabella --- Con Mass Assignment
+        $data['post_id'] = $newPost->id;
+        $newInfo = new InfoPost();
+        $newInfo->fill($data);
+        $infoSaved = $newInfo->save();
+
+
+        if($saved && $infoSaved) {
+            if (!empty($data['tags'])) {
+                $newPost->tags()->attach($data['tags']);
+
+            }
             return redirect()->route('posts.index');
         } else {
             return redirect()->route('homepage');
@@ -93,13 +108,14 @@ class PostController extends Controller
     public function edit($slug)
     {
         $post = Post::where('slug', $slug)->first();
+        $tags = Tag::all();
 
         //Controlliamo se quel che stiamo cercando, esista
         if(empty($post)) {
             abort(404);
         }                             
         
-        return view('posts.edit', compact('post'));
+        return view('posts.edit', compact('post', 'tags'));
     }
 
     /**
@@ -132,10 +148,23 @@ class PostController extends Controller
         }
 
         //UPDATE DB
-
         $updated = $post->update($data); //<- $fillable nel Model
 
-        if($updated) {
+        //Info table update
+        $data['post_id'] = $post->id;
+        $info = InfoPost::where('post_id', $post->id)->first();
+        $infoUpdate = $info->update($data);  //<- $fillable nel Model
+
+
+
+        if($updated && $infoUpdate) {
+
+            if (!empty($data['tags'])) {
+                $post->tags()->sync($data['tags']);
+            } else {
+                $post->tags()->detach();
+            }
+
             return redirect()->route('posts.show', $post->slug);
         } else {
             return redirect()->route('homepage');
@@ -154,6 +183,7 @@ class PostController extends Controller
     {
         $title = $post->title;
         $image = $post->img_path;
+        $post->tags()->detach();
         $deleted = $post->delete();
 
         if($deleted) {

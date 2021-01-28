@@ -16,7 +16,7 @@ class PostTableSeeder extends Seeder
     public function run(Faker $faker)
     {
         //!!!!!!ATTENZIONE USARE SOLO SE RICHIESTO! (rimuove TUTTI i dati contenenti nel db prima del seed!)!!!!!!
-        Post::truncate();
+        //Post::truncate();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
 
